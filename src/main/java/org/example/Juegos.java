@@ -14,18 +14,21 @@ public class Juegos extends JFrame {
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
 
         // Crear un panel para organizar los botones
-        JPanel panelBotones = new JPanel();
-        panelBotones.setLayout(new GridLayout(3, 1, 20, 20)); // 3 filas, 1 columna, con espacio entre botones
-        panelBotones.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30)); // Espacio alrededor del panel
+        CardLayout cardLayout = new CardLayout();
+        JPanel mainPanel = new JPanel(cardLayout);
+        mainPanel.setLayout(new GridLayout(3, 1, 20, 20)); // 3 filas, 1 columna, con espacio entre botones
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30)); // Espacio alrededor del panel
 
         // Botón para abrir la ventana de Caballo
         JButton botonAbrirCaballo = new JButton("Abrir Ventana Caballo");
-        botonAbrirCaballo.addActionListener(new ActionListener() {
+        botonAbrirCaballo.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Caballo")); // Cambia a la vista de Caballo
+
+        /*botonAbrirCaballo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Caballo(); // Abre la ventana Caballo
             }
-        });
+        });*/
 
         // Botón para abrir la ventana de Hanoi
         JButton botonAbrirHanoi = new JButton("Abrir Ventana Hanoi");
@@ -46,12 +49,12 @@ public class Juegos extends JFrame {
         });
 
         // Agregar los botones al panel
-        panelBotones.add(botonAbrirCaballo);
-        panelBotones.add(botonAbrirHanoi);
-        panelBotones.add(botonAbrirReinas);
+        mainPanel.add(botonAbrirCaballo);
+        mainPanel.add(botonAbrirHanoi);
+        mainPanel.add(botonAbrirReinas);
 
         // Agregar el panel de botones a la ventana
-        add(panelBotones);
+        add(mainPanel);
 
         // Hacer visible la ventana
         setVisible(true);

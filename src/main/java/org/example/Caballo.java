@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class Caballo extends JFrame
+public class Caballo extends JPanel
 {
 
     private int N;
@@ -39,10 +39,7 @@ public class Caballo extends JFrame
         casillas = new JPanel [N][N];
         tableroSolucion = new int [N][N];
 
-        setTitle ("Problema del Caballo");
-        setSize (550, 550);
-        setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo (null);
+        setLayout(new BorderLayout());
 
         // Creación del tablero
         JPanel tablero = new JPanel (new GridLayout (N, N));
@@ -100,14 +97,12 @@ public class Caballo extends JFrame
         timer.start ();
 
         // Botón para regresar
-        JButton botonRegresar = new JButton ("Regresar a la Pantalla Inicial");
-        botonRegresar.addActionListener (new ActionListener ()
-        {
+        JButton botonRegresar = new JButton("Regresar a la Pantalla Inicial");
+        botonRegresar.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed (ActionEvent e)
-            {
-                dispose ();
-                new Juegos ();
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.getWindowAncestor(Caballo.this).dispose();
+                new Juegos();
             }
         });
 
@@ -118,7 +113,6 @@ public class Caballo extends JFrame
         contenedorPrincipal.add (botonRegresar, BorderLayout.SOUTH);
 
         add (contenedorPrincipal);
-        setVisible (true);
     }
 
     // Fórmula para resolver el problema
@@ -222,10 +216,5 @@ public class Caballo extends JFrame
             this.y = y;
             this.numero = numero;
         }
-    }
-
-    public static void main (String [] args)
-    {
-        new Caballo ();
     }
 }
