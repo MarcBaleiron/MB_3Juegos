@@ -18,7 +18,7 @@ public class Juegos extends JFrame {
     public Juegos() {
         // Configuración de la ventana
         setTitle("Elección de Juegos");
-        setSize(550, 550); // Tamaño de la ventana
+        setSize(650, 550); // Tamaño de la ventana
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cerrar la aplicación al cerrar la ventana
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
 
@@ -33,7 +33,11 @@ public class Juegos extends JFrame {
 
         // Botón para abrir la ventana de Caballo
         JButton botonAbrirCaballo = new JButton("Problema del Caballo de Ajedrez");
-        botonAbrirCaballo.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Caballo"));
+        botonAbrirCaballo.addActionListener(e -> {
+            Caballo panelCaballo = new Caballo(); // Crear una nueva instancia de Caballo
+            mainPanel.add(panelCaballo, "Caballo"); // Agregar el panel al CardLayout
+            cardLayout.show(mainPanel, "Caballo"); // Mostrar el panel de Caballo
+        });
 
         // Botón para abrir la ventana de Torres de Hanoi
         JButton botonAbrirHanoi = new JButton("Torres de Hanoi");
