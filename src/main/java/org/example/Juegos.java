@@ -1,10 +1,19 @@
 package org.example;
-import java.awt.*;
+
+import java.awt.CardLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class Juegos extends JFrame {
+
+    private CardLayout cardLayout; // Declare CardLayout as a class-level field
+    private JPanel mainPanel; // Declare mainPanel as a class-level field
 
     public Juegos() {
         // Configuración de la ventana
@@ -13,47 +22,60 @@ public class Juegos extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cerrar la aplicación al cerrar la ventana
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
 
-        // Crear un panel para organizar los botones
-        CardLayout cardLayout = new CardLayout();
-        JPanel mainPanel = new JPanel(cardLayout);
-        mainPanel.setLayout(new GridLayout(3, 1, 20, 20)); // 3 filas, 1 columna, con espacio entre botones
+        // Crear un CardLayout para cambiar entre vistas
+        cardLayout = new CardLayout(); // Initialize the class-level CardLayout
+        mainPanel = new JPanel(cardLayout); // Initialize the class-level mainPanel
         mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30)); // Espacio alrededor del panel
 
+        // Panel inicial con botones
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(3, 1, 20, 20)); // 3 filas, 1 columna, con espacio entre botones
+
         // Botón para abrir la ventana de Caballo
-        JButton botonAbrirCaballo = new JButton("Abrir Ventana Caballo");
-        botonAbrirCaballo.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Caballo")); // Cambia a la vista de Caballo
+        JButton botonAbrirCaballo = new JButton("Problema del Caballo de Ajedrez");
+        botonAbrirCaballo.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Caballo"));
 
-        /*botonAbrirCaballo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Caballo(); // Abre la ventana Caballo
-            }
-        });*/
+        // Botón para abrir la ventana de Torres de Hanoi
+        JButton botonAbrirHanoi = new JButton("Torres de Hanoi");
+        botonAbrirHanoi.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Hanoi"));
 
-        // Botón para abrir la ventana de Hanoi
-        JButton botonAbrirHanoi = new JButton("Abrir Ventana Hanoi");
-        botonAbrirHanoi.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Hanoi(); // Abre la ventana Hanoi (debes crear esta clase)
-            }
-        });
+        // Botón para abrir la ventana de Problema de las Reinas
+        JButton botonAbrirReinas = new JButton("Problema de las Reinas");
+        botonAbrirReinas.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Reinas"));
 
-        // Botón para abrir la ventana de Reinas
-        JButton botonAbrirReinas = new JButton("Abrir Ventana Reinas");
-        botonAbrirReinas.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Reinas(); // Abre la ventana Reinas (debes crear esta clase)
-            }
-        });
+        // Agregar los botones al panel de botones
+        buttonPanel.add(botonAbrirCaballo);
+        buttonPanel.add(botonAbrirHanoi);
+        buttonPanel.add(botonAbrirReinas);
 
-        // Agregar los botones al panel
-        mainPanel.add(botonAbrirCaballo);
-        mainPanel.add(botonAbrirHanoi);
-        mainPanel.add(botonAbrirReinas);
+        // Agregar el panel de botones al CardLayout
+        mainPanel.add(buttonPanel, "Menu");
 
-        // Agregar el panel de botones a la ventana
+        // Crear paneles para cada juego (pueden ser reemplazados con contenido real)
+        JPanel caballoPanel = new JPanel();
+        caballoPanel.add(new JLabel("Panel del Problema del Caballo de Ajedrez"));
+        JButton volverCaballo = new JButton("Volver al menú");
+        volverCaballo.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Menu"));
+        caballoPanel.add(volverCaballo);
+
+        JPanel hanoiPanel = new JPanel();
+        hanoiPanel.add(new JLabel("Panel de las Torres de Hanoi"));
+        JButton volverHanoi = new JButton("Volver al menú");
+        volverHanoi.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Menu"));
+        hanoiPanel.add(volverHanoi);
+
+        JPanel reinasPanel = new JPanel();
+        reinasPanel.add(new JLabel("Panel del Problema de las Reinas"));
+        JButton volverReinas = new JButton("Volver al menú");
+        volverReinas.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Menu"));
+        reinasPanel.add(volverReinas);
+
+        // Agregar los paneles de cada juego al CardLayout
+        mainPanel.add(caballoPanel, "Caballo");
+        mainPanel.add(hanoiPanel, "Hanoi");
+        mainPanel.add(reinasPanel, "Reinas");
+
+        // Agregar el panel principal a la ventana
         add(mainPanel);
 
         // Hacer visible la ventana
@@ -61,7 +83,6 @@ public class Juegos extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Crear y mostrar la ventana
         new Juegos();
     }
 }

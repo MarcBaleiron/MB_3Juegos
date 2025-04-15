@@ -2,6 +2,7 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+        // Crear una instancia de Juegos y mostrarla
+        new Juegos(); // This will display the "Elección de Juegos" window
     }
 }
