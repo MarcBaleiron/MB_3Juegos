@@ -3,23 +3,31 @@ package org.example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.util.*;
+import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Caballo extends JPanel {
 
     private int N;
     private JPanel[][] casillas;
     private int[][] tableroSolucion;
-    private int[] movimientosX = {2, 1, -1, -2, -2, -1, 1, 2};
-    private int[] movimientosY = {1, 2, 2, 1, -1, -2, -2, -1};
     private javax.swing.Timer timer;
     private java.util.List<Paso> pasos = new ArrayList<>();
     private DefaultListModel<String> moveListModel; // Model for the move list
+    private Ficha.FichaCaballo fichaCaballo;
 
     public Caballo() {
+        Database.initializeDatabase();
+
         // Se pide el tamaño deseado del tablero al usuario
         String input = JOptionPane.showInputDialog(this, "Ingrese el tamaño del tablero (=>5):", "Tamaño del Tablero", JOptionPane.QUESTION_MESSAGE);
         try {
@@ -34,6 +42,7 @@ public class Caballo extends JPanel {
 
         casillas = new JPanel[N][N];
         tableroSolucion = new int[N][N];
+        fichaCaballo = new Ficha.FichaCaballo();
 
         setLayout(new BorderLayout());
 
@@ -134,33 +143,43 @@ public class Caballo extends JPanel {
         add(moveScrollPane, BorderLayout.EAST);
     }
 
+    private void saveMovementsToDatabase() {
+        try {
+            Database.createTableIfNotExists(); // Ensures the table exists
+            String insertSQL = "INSERT INTO movimientos_Caballo (move_number, x_position, y_position, board_size) VALUES (?, ?, ?, ?)";
+
+            try (Connection conn = Database.connect();
+                 PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
+
+                for (Paso paso : pasos) {
+                    stmt.setInt(1, paso.numero);
+                    stmt.setInt(2, paso.x);
+                    stmt.setInt(3, paso.y);
+                    stmt.setInt(4, N);
+                    stmt.addBatch();
+                }
+
+                stmt.executeBatch();
+                System.out.println("Movements saved successfully.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error saving movements to database: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     // Fórmula para resolver el problema
     private boolean resolverCaballoUtil(int x, int y, int movimiento) {
         if (movimiento == N * N) {
+            saveMovementsToDatabase();
             return true;
         }
 
-        int[][] movimientosPosibles = new int[8][3];
-        int contadorMovimientos = 0;
+        List<int[]> movimientosValidos = fichaCaballo.mover(x, y, N, tableroSolucion);
 
-        for (int i = 0; i < 8; i++) {
-            int siguienteX = x + movimientosX[i];
-            int siguienteY = y + movimientosY[i];
-
-            if (esMovimientoValido(siguienteX, siguienteY)) {
-                int grado = calcularGrado(siguienteX, siguienteY);
-                movimientosPosibles[contadorMovimientos][0] = siguienteX;
-                movimientosPosibles[contadorMovimientos][1] = siguienteY;
-                movimientosPosibles[contadorMovimientos][2] = grado;
-                contadorMovimientos++;
-            }
-        }
-
-        Arrays.sort(movimientosPosibles, 0, contadorMovimientos, (a, b) -> Integer.compare(a[2], b[2]));
-
-        for (int i = 0; i < contadorMovimientos; i++) {
-            int siguienteX = movimientosPosibles[i][0];
-            int siguienteY = movimientosPosibles[i][1];
+        for (int [] movimientoValido : movimientosValidos) {
+            int siguienteX = movimientoValido[0];
+            int siguienteY = movimientoValido[1];
 
             tableroSolucion[siguienteX][siguienteY] = movimiento;
             pasos.add(new Paso(siguienteX, siguienteY, movimiento));
@@ -174,23 +193,6 @@ public class Caballo extends JPanel {
         }
 
         return false;
-    }
-
-    // Cálculo del grado de cada casilla
-    private int calcularGrado(int x, int y) {
-        int grado = 0;
-        for (int i = 0; i < 8; i++) {
-            int siguienteX = x + movimientosX[i];
-            int siguienteY = y + movimientosY[i];
-            if (esMovimientoValido(siguienteX, siguienteY)) {
-                grado++;
-            }
-        }
-        return grado;
-    }
-
-    private boolean esMovimientoValido(int x, int y) {
-        return x >= 0 && x < N && y >= 0 && y < N && tableroSolucion[x][y] == -1;
     }
 
     // Muestra la solución el en tablero

@@ -2,7 +2,6 @@ package org.example;
 
 import java.awt.CardLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -41,11 +40,19 @@ public class Juegos extends JFrame {
 
         // Botón para abrir la ventana de Torres de Hanoi
         JButton botonAbrirHanoi = new JButton("Torres de Hanoi");
-        botonAbrirHanoi.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Hanoi"));
+        botonAbrirHanoi.addActionListener(e -> {
+            Hanoi panelCaballo = new Hanoi(); // Crear una nueva instancia de Caballo
+            mainPanel.add(panelCaballo, "Hanoi"); // Agregar el panel al CardLayout
+            cardLayout.show(mainPanel, "Hanoi"); // Mostrar el panel de Caballo
+        });
 
         // Botón para abrir la ventana de Problema de las Reinas
         JButton botonAbrirReinas = new JButton("Problema de las Reinas");
-        botonAbrirReinas.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Reinas"));
+        botonAbrirReinas.addActionListener(e -> {
+            Reinas panelCaballo = new Reinas(); // Crear una nueva instancia de Caballo
+            mainPanel.add(panelCaballo, "Reinas"); // Agregar el panel al CardLayout
+            cardLayout.show(mainPanel, "Reinas"); // Mostrar el panel de Caballo
+        });
 
         // Agregar los botones al panel de botones
         buttonPanel.add(botonAbrirCaballo);
@@ -58,21 +65,12 @@ public class Juegos extends JFrame {
         // Crear paneles para cada juego (pueden ser reemplazados con contenido real)
         JPanel caballoPanel = new JPanel();
         caballoPanel.add(new JLabel("Panel del Problema del Caballo de Ajedrez"));
-        JButton volverCaballo = new JButton("Volver al menú");
-        volverCaballo.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Menu"));
-        caballoPanel.add(volverCaballo);
 
         JPanel hanoiPanel = new JPanel();
         hanoiPanel.add(new JLabel("Panel de las Torres de Hanoi"));
-        JButton volverHanoi = new JButton("Volver al menú");
-        volverHanoi.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Menu"));
-        hanoiPanel.add(volverHanoi);
 
         JPanel reinasPanel = new JPanel();
         reinasPanel.add(new JLabel("Panel del Problema de las Reinas"));
-        JButton volverReinas = new JButton("Volver al menú");
-        volverReinas.addActionListener((ActionEvent e) -> cardLayout.show(mainPanel, "Menu"));
-        reinasPanel.add(volverReinas);
 
         // Agregar los paneles de cada juego al CardLayout
         mainPanel.add(caballoPanel, "Caballo");
