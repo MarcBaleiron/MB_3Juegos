@@ -145,8 +145,7 @@ public class Caballo extends JPanel {
 
     private void saveMovementsToDatabase() {
         try {
-            Database.createTableIfNotExists(); // Ensures the table exists
-            String insertSQL = "INSERT INTO movimientos_Caballo (move_number, x_position, y_position, board_size) VALUES (?, ?, ?, ?)";
+            String insertSQL = "INSERT INTO Movimientos_Caballo (move_number, x_position, y_position, board_size) VALUES (?, ?, ?, ?)";
 
             try (Connection conn = Database.connect();
                  PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
