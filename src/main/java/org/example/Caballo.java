@@ -11,10 +11,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 public class Caballo extends JPanel {
 
     private int N;
@@ -26,8 +22,6 @@ public class Caballo extends JPanel {
     private Ficha.FichaCaballo fichaCaballo;
 
     public Caballo() {
-        Database.initializeDatabase();
-
         // Se pide el tamaño deseado del tablero al usuario
         String input = JOptionPane.showInputDialog(this, "Ingrese el tamaño del tablero (=>5):", "Tamaño del Tablero", JOptionPane.QUESTION_MESSAGE);
         try {
@@ -143,34 +137,9 @@ public class Caballo extends JPanel {
         add(moveScrollPane, BorderLayout.EAST);
     }
 
-    private void saveMovementsToDatabase() {
-        try {
-            String insertSQL = "INSERT INTO Movimientos_Caballo (move_number, x_position, y_position, board_size) VALUES (?, ?, ?, ?)";
-
-            try (Connection conn = Database.connect();
-                 PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
-
-                for (Paso paso : pasos) {
-                    stmt.setInt(1, paso.numero);
-                    stmt.setInt(2, paso.x);
-                    stmt.setInt(3, paso.y);
-                    stmt.setInt(4, N);
-                    stmt.addBatch();
-                }
-
-                stmt.executeBatch();
-                System.out.println("Movements saved successfully.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error saving movements to database: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
     // Fórmula para resolver el problema
     private boolean resolverCaballoUtil(int x, int y, int movimiento) {
         if (movimiento == N * N) {
-            saveMovementsToDatabase();
             return true;
         }
 

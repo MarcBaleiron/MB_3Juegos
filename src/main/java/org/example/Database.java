@@ -1,31 +1,28 @@
 package org.example;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Database {
-    private static final String URL = "jdbc:sqlite:movements.db";
+    private static final String URL = "jdbc:mysql://localhost:3306/db";
+    private static final String USER = "root";
+    private static final String PASSWORD = "password";
 
-    public static Connection connect() throws SQLException {
-        return DriverManager.getConnection(URL);
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    public static void initializeDatabase() {
-        String createTableSQL = """
-            CREATE TABLE IF NOT EXISTS Movimientos_Caballo (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                move_number INTEGER NOT NULL,
-                x_position INTEGER NOT NULL,
-                y_position INTEGER NOT NULL,
-                board_size INTEGER NOT NULL
-            );
-        """;
-
-        try (Connection conn = connect();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(createTableSQL);
-            System.out.println("Table 'Movimientos_Caballo' ensured to exist.");
+    public static void saveMovement(int x, int y, int moveNumber) {
+        String query = "INSERT INTO movements (x, y, move_number) VALUES (?, ?, ?)";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, x);
+            statement.setInt(2, y);
+            statement.setInt(3, moveNumber);
+            statement.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error creating table: " + e.getMessage());
             e.printStackTrace();
         }
     }
