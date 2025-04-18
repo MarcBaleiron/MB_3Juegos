@@ -3,10 +3,8 @@ package org.example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -18,6 +16,7 @@ public class Hanoi extends JPanel {
     private List<Move> moves;
     private int moveIndex;
     private Ficha.FichaHanoi fichaHanoi;
+    private DefaultListModel<String> moveListModel; // Model for the move list
 
     public Hanoi() {
         // Ask the user for the number of disks
@@ -59,14 +58,22 @@ public class Hanoi extends JPanel {
         // Solve the problem and generate the moves
         resolverHanoi(numDisks, 0, 2, 1);
 
+        // Initialize the move list
+        moveListModel = new DefaultListModel<>();
+        JList<String> moveList = new JList<>(moveListModel);
+        JScrollPane moveScrollPane = new JScrollPane(moveList);
+        moveScrollPane.setPreferredSize(new Dimension(220, 0)); // Set width for the move list
+
         // Timer to animate the moves
         timer = new javax.swing.Timer(500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (moveIndex < moves.size()) {
                     Move move = moves.get(moveIndex);
+                    int disk = rods[move.from].get(rods[move.from].size() - 1); // Get the disk being moved
                     rods[move.to].add(rods[move.from].remove(rods[move.from].size() - 1));
                     actualizarTorres();
+                    moveListModel.addElement("Move " + (moveIndex + 1) + ": Disk " + disk + " from Rod " + move.from + " to Rod " + move.to); // Add move to the list
                     moveIndex++;
                 } else {
                     timer.stop();
@@ -92,25 +99,17 @@ public class Hanoi extends JPanel {
         contenedorPrincipal.add(botonRegresar, BorderLayout.SOUTH);
 
         add(contenedorPrincipal, BorderLayout.CENTER);
+        add(moveScrollPane, BorderLayout.EAST); // Add the move list to the right
     }
 
-    // Recursive algorithm to solve the Towers of Hanoi using FichaHanoi
+    // Recursive algorithm to solve the Towers of Hanoi
     private void resolverHanoi(int n, int from, int to, int aux) {
         if (n == 1) {
             moves.add(new Move(from, to));
             return;
         }
-
-        // Use FichaHanoi to determine valid moves
-        List<int[]> validMoves = fichaHanoi.mover(from, to, 3, null);
-
         resolverHanoi(n - 1, from, aux, to);
-        for (int[] move : validMoves) {
-            if (move[0] == from && move[1] == to) {
-                moves.add(new Move(move[0], move[1]));
-                break;
-            }
-        }
+        moves.add(new Move(from, to));
         resolverHanoi(n - 1, aux, to, from);
     }
 
