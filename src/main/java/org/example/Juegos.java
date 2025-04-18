@@ -17,7 +17,7 @@ public class Juegos extends JFrame {
     public Juegos() {
         // Configuración de la ventana
         setTitle("Elección de Juegos");
-        setSize(650, 550); // Tamaño de la ventana
+        setSize(750, 650); // Tamaño de la ventana
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cerrar la aplicación al cerrar la ventana
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
 
@@ -33,25 +33,25 @@ public class Juegos extends JFrame {
         // Botón para abrir la ventana de Caballo
         JButton botonAbrirCaballo = new JButton("Problema del Caballo de Ajedrez");
         botonAbrirCaballo.addActionListener(e -> {
-            Caballo panelCaballo = new Caballo(); // Crear una nueva instancia de Caballo
-            mainPanel.add(panelCaballo, "Caballo"); // Agregar el panel al CardLayout
-            cardLayout.show(mainPanel, "Caballo"); // Mostrar el panel de Caballo
+            Caballo panelCaballo = new Caballo();
+            mainPanel.add(panelCaballo, "Caballo");
+            cardLayout.show(mainPanel, "Caballo");
         });
 
         // Botón para abrir la ventana de Torres de Hanoi
         JButton botonAbrirHanoi = new JButton("Torres de Hanoi");
         botonAbrirHanoi.addActionListener(e -> {
-            Hanoi panelCaballo = new Hanoi(); // Crear una nueva instancia de Caballo
-            mainPanel.add(panelCaballo, "Hanoi"); // Agregar el panel al CardLayout
-            cardLayout.show(mainPanel, "Hanoi"); // Mostrar el panel de Caballo
+            Hanoi panelCaballo = new Hanoi();
+            mainPanel.add(panelCaballo, "Hanoi");
+            cardLayout.show(mainPanel, "Hanoi");
         });
 
         // Botón para abrir la ventana de Problema de las Reinas
         JButton botonAbrirReinas = new JButton("Problema de las Reinas");
         botonAbrirReinas.addActionListener(e -> {
-            Reinas panelCaballo = new Reinas(); // Crear una nueva instancia de Caballo
-            mainPanel.add(panelCaballo, "Reinas"); // Agregar el panel al CardLayout
-            cardLayout.show(mainPanel, "Reinas"); // Mostrar el panel de Caballo
+            Reinas panelCaballo = new Reinas();
+            mainPanel.add(panelCaballo, "Reinas");
+            cardLayout.show(mainPanel, "Reinas");
         });
 
         // Agregar los botones al panel de botones
