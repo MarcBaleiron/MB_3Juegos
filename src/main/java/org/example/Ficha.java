@@ -26,4 +26,43 @@ public abstract class Ficha {
             return movimientosValidos;
         }
     }
+
+    public static class FichaReinas extends Ficha {
+        @Override
+        public List<int[]> mover(int x, int y, int N, int[][] tableroSolucion) {
+            List<int[]> movimientosValidos = new ArrayList<>();
+
+            // Horizontal and vertical moves
+            for (int i = 0; i < N; i++) {
+                if (i != x) movimientosValidos.add(new int[]{i, y});
+                if (i != y) movimientosValidos.add(new int[]{x, i});
+            }
+
+            // Diagonal moves
+            for (int i = 1; i < N; i++) {
+                if (x + i < N && y + i < N) movimientosValidos.add(new int[]{x + i, y + i});
+                if (x - i >= 0 && y - i >= 0) movimientosValidos.add(new int[]{x - i, y - i});
+                if (x + i < N && y - i >= 0) movimientosValidos.add(new int[]{x + i, y - i});
+                if (x - i >= 0 && y + i < N) movimientosValidos.add(new int[]{x - i, y + i});
+            }
+
+            return movimientosValidos;
+        }
+    }
+
+    public static class FichaHanoi extends Ficha {
+        @Override
+        public List<int[]> mover(int x, int y, int N, int[][] tableroSolucion) {
+            List<int[]> movimientosValidos = new ArrayList<>();
+
+            movimientosValidos.add(new int[]{0, 1});
+            movimientosValidos.add(new int[]{0, 2});
+            movimientosValidos.add(new int[]{1, 0});
+            movimientosValidos.add(new int[]{1, 2});
+            movimientosValidos.add(new int[]{2, 0});
+            movimientosValidos.add(new int[]{2, 1});
+
+            return movimientosValidos;
+        }
+    }
 }

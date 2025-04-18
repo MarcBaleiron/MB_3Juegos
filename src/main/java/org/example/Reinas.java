@@ -4,15 +4,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 
 public class Reinas extends JPanel {
     private int N;
     private JPanel[][] casillas;
     private int[][] tableroSolucion;
+    private Ficha.FichaReinas fichaReinas;
 
     public Reinas() {
         // Ask the user for the board size
@@ -29,21 +31,20 @@ public class Reinas extends JPanel {
 
         casillas = new JPanel[N][N];
         tableroSolucion = new int[N][N];
+        fichaReinas = new Ficha.FichaReinas();
 
         setLayout(new BorderLayout());
 
-        // Creación del tablero
+        // Create the board
         JPanel tablero = new JPanel(new GridLayout(N, N)) {
             @Override
             public Dimension getPreferredSize() {
-                // Ensure the board is square by using the smaller dimension
                 int size = Math.min(getParent().getWidth(), getParent().getHeight());
                 return new Dimension(size, size);
             }
 
             @Override
             public void setBounds(int x, int y, int width, int height) {
-                // Ensure the board remains square when resized
                 int size = Math.min(width, height);
                 super.setBounds(x, y, size, size);
             }
@@ -72,7 +73,6 @@ public class Reinas extends JPanel {
         JList<String> positionList = new JList<>(listModel);
         JScrollPane listScrollPane = new JScrollPane(positionList);
         listScrollPane.setPreferredSize(new Dimension(200, 0)); // Set width for the list
-
 
         // Solve the N-Queens problem
         if (resolverReinas(0)) {
@@ -112,6 +112,9 @@ public class Reinas extends JPanel {
         for (int columna = 0; columna < N; columna++) {
             if (esSeguro(fila, columna)) {
                 tableroSolucion[fila][columna] = 1; // Place the queen
+
+                // Get valid moves for the queen
+                List<int[]> movimientosValidos = fichaReinas.mover(fila, columna, N, tableroSolucion);
 
                 if (resolverReinas(fila + 1)) {
                     return true;

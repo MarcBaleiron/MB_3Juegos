@@ -3,8 +3,10 @@ package org.example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -15,6 +17,7 @@ public class Hanoi extends JPanel {
     private javax.swing.Timer timer;
     private List<Move> moves;
     private int moveIndex;
+    private Ficha.FichaHanoi fichaHanoi;
 
     public Hanoi() {
         // Ask the user for the number of disks
@@ -39,6 +42,7 @@ public class Hanoi extends JPanel {
         }
         moves = new ArrayList<>();
         moveIndex = 0;
+        fichaHanoi = new Ficha.FichaHanoi();
 
         setLayout(new BorderLayout());
 
@@ -90,14 +94,23 @@ public class Hanoi extends JPanel {
         add(contenedorPrincipal, BorderLayout.CENTER);
     }
 
-    // Recursive algorithm to solve the Towers of Hanoi
+    // Recursive algorithm to solve the Towers of Hanoi using FichaHanoi
     private void resolverHanoi(int n, int from, int to, int aux) {
         if (n == 1) {
             moves.add(new Move(from, to));
             return;
         }
+
+        // Use FichaHanoi to determine valid moves
+        List<int[]> validMoves = fichaHanoi.mover(from, to, 3, null);
+
         resolverHanoi(n - 1, from, aux, to);
-        moves.add(new Move(from, to));
+        for (int[] move : validMoves) {
+            if (move[0] == from && move[1] == to) {
+                moves.add(new Move(move[0], move[1]));
+                break;
+            }
+        }
         resolverHanoi(n - 1, aux, to, from);
     }
 
