@@ -57,14 +57,6 @@ public class Caballo extends JPanel {
             }
         };
 
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            @Override
-            public void componentResized(java.awt.event.ComponentEvent e) {
-                tablero.revalidate();
-                tablero.repaint();
-            }
-        });
-
         for (int fila = 0; fila < N; fila++) {
             for (int columna = 0; columna < N; columna++) {
                 JPanel cuadrado = new JPanel();
