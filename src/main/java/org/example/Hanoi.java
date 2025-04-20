@@ -4,8 +4,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -94,14 +98,73 @@ public class Hanoi extends JPanel {
             }
         });
 
+        // Button to save to database
+        JButton saveButton = new JButton("Guardar en Base de Datos");
+        saveButton.addActionListener(e -> saveMovesToDatabase());
+
+        // Panel for buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(botonRegresar);
+        buttonPanel.add(saveButton);
+
         // Add components to the panel
         JPanel contenedorPrincipal = new JPanel(new BorderLayout());
         contenedorPrincipal.setBorder(new EmptyBorder(30, 30, 30, 30));
         contenedorPrincipal.add(rodsPanel, BorderLayout.CENTER);
-        contenedorPrincipal.add(botonRegresar, BorderLayout.SOUTH);
+        contenedorPrincipal.add(buttonPanel, BorderLayout.SOUTH);
 
         add(contenedorPrincipal, BorderLayout.CENTER);
         add(moveScrollPane, BorderLayout.EAST); // Add the move list to the right
+    }
+
+    // Method to save moves to database
+    private void saveMovesToDatabase() {
+        String gameId = UUID.randomUUID().toString();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "INSERT INTO movimientos_hanoi (game_id, move_number, disk_number, from_rod, to_rod) VALUES (?, ?, ?, ?, ?)")) {
+
+            for (int i = 0; i < moves.size(); i++) {
+                Move move = moves.get(i);
+                int diskNumber = getDiskNumber(move, i);
+
+                stmt.setString(1, gameId);
+                stmt.setInt(2, i + 1);
+                stmt.setInt(3, diskNumber);
+                stmt.setInt(4, move.from);
+                stmt.setInt(5, move.to);
+                stmt.executeUpdate();
+            }
+            JOptionPane.showMessageDialog(this, "Movimientos guardados en la base de datos",
+                    "Guardado exitoso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Helper method to determine which disk is being moved at a given step
+    private int getDiskNumber(Move move, int moveIndex) {
+        // Create a simulation of the game state up to this move
+        List<Integer>[] simulatedRods = new ArrayList[3];
+        for (int i = 0; i < 3; i++) {
+            simulatedRods[i] = new ArrayList<>();
+        }
+
+        // Initialize first rod with all disks
+        for (int i = numDisks; i > 0; i--) {
+            simulatedRods[0].add(i);
+        }
+
+        // Replay all moves up to this one
+        for (int i = 0; i < moveIndex; i++) {
+            Move m = moves.get(i);
+            simulatedRods[m.to].add(simulatedRods[m.from].remove(simulatedRods[m.from].size() - 1));
+        }
+
+        // Return the top disk from the source rod
+        return simulatedRods[move.from].get(simulatedRods[move.from].size() - 1);
     }
 
     // Recursive algorithm to solve the Towers of Hanoi

@@ -4,8 +4,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
+import java.util.UUID;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -118,15 +122,47 @@ public class Caballo extends JPanel {
             }
         });
 
-        // Contenedor para el tablero y el botón
+        // Botón para guardar en la base de datos
+        JButton saveButton = new JButton("Guardar en Base de Datos");
+        saveButton.addActionListener(e -> saveMovesToDatabase());
+
+        // Panel para los botones
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(botonRegresar);
+        buttonPanel.add(saveButton);
+
+        // Contenedor para el tablero y los botones
         JPanel contenedorPrincipal = new JPanel(new BorderLayout());
         contenedorPrincipal.setBorder(new EmptyBorder(30, 30, 30, 30));
         contenedorPrincipal.add(tablero, BorderLayout.CENTER);
-        contenedorPrincipal.add(botonRegresar, BorderLayout.SOUTH);
+        contenedorPrincipal.add(buttonPanel, BorderLayout.SOUTH);
 
         // Agregar el tablero y la lista de movimientos al panel principal
         add(contenedorPrincipal, BorderLayout.CENTER);
         add(moveScrollPane, BorderLayout.EAST);
+    }
+
+    // Metodo para guardar los movimientos en la base de datos
+    private void saveMovesToDatabase() {
+        String gameId = UUID.randomUUID().toString();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "INSERT INTO movimientos_caballo (game_id, move_number, x_position, y_position) VALUES (?, ?, ?, ?)")) {
+
+            for (Paso paso : pasos) {
+                stmt.setString(1, gameId);
+                stmt.setInt(2, paso.numero);
+                stmt.setInt(3, paso.x);
+                stmt.setInt(4, paso.y);
+                stmt.executeUpdate();
+            }
+            JOptionPane.showMessageDialog(this, "Movimientos guardados en la base de datos",
+                    "Guardado exitoso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Fórmula para resolver el problema

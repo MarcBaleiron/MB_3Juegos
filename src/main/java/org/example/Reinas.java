@@ -4,7 +4,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -92,15 +96,52 @@ public class Reinas extends JPanel {
             }
         });
 
-        // Contenedor para el tablero y el botón
+        // Button to save to database
+        JButton saveButton = new JButton("Guardar en Base de Datos");
+        saveButton.addActionListener(e -> savePositionsToDatabase());
+
+        // Panel for buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(botonRegresar);
+        buttonPanel.add(saveButton);
+
+        // Contenedor para el tablero y los botones
         JPanel contenedorPrincipal = new JPanel(new BorderLayout());
         contenedorPrincipal.setBorder(new EmptyBorder(30, 30, 30, 30));
         contenedorPrincipal.add(tablero, BorderLayout.CENTER);
-        contenedorPrincipal.add(botonRegresar, BorderLayout.SOUTH);
+        contenedorPrincipal.add(buttonPanel, BorderLayout.SOUTH);
 
         // Agregar el tablero y la tabla
         add(contenedorPrincipal, BorderLayout.CENTER);
         add(listScrollPane, BorderLayout.EAST);
+    }
+
+    // Method to save queen positions to database
+    private void savePositionsToDatabase() {
+        String gameId = UUID.randomUUID().toString();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "INSERT INTO posiciones_reinas (game_id, queen_number, row_position, col_position) VALUES (?, ?, ?, ?)")) {
+
+            int queenNumber = 1;
+            for (int fila = 0; fila < N; fila++) {
+                for (int columna = 0; columna < N; columna++) {
+                    if (tableroSolucion[fila][columna] == 1) {
+                        stmt.setString(1, gameId);
+                        stmt.setInt(2, queenNumber++);
+                        stmt.setInt(3, fila);
+                        stmt.setInt(4, columna);
+                        stmt.executeUpdate();
+                    }
+                }
+            }
+            JOptionPane.showMessageDialog(this, "Posiciones guardadas en la base de datos",
+                    "Guardado exitoso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Backtracking algorithm to solve the N-Queens problem
