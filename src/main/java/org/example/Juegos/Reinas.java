@@ -1,4 +1,7 @@
-package org.example;
+package org.example.Juegos;
+
+import org.example.DatabaseConnection;
+import org.example.Ficha;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -110,7 +113,7 @@ public class Reinas extends JPanel
             public void actionPerformed (ActionEvent e)
             {
                 SwingUtilities.getWindowAncestor (Reinas.this).dispose ();
-                new Juegos ();
+                new Juegos();
             }
         });
 

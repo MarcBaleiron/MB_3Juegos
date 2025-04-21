@@ -1,4 +1,7 @@
-package org.example;
+package org.example.Juegos;
+
+import org.example.DatabaseConnection;
+import org.example.Ficha;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -74,7 +77,7 @@ public class Hanoi extends JPanel
         moveListModel = new DefaultListModel <> ();
         JList <String> moveList = new JList <> (moveListModel);
         JScrollPane moveScrollPane = new JScrollPane (moveList);
-        moveScrollPane.setPreferredSize (new Dimension (220, 0));
+        moveScrollPane.setPreferredSize (new Dimension (240, 0));
 
         // Tiempo que pasa entre cada movimiento
         timer = new javax.swing.Timer (500, new ActionListener()
@@ -106,7 +109,7 @@ public class Hanoi extends JPanel
             public void actionPerformed (ActionEvent e)
             {
                 SwingUtilities.getWindowAncestor (Hanoi.this).dispose ();
-                new Juegos ();
+                new Juegos();
             }
         });
 

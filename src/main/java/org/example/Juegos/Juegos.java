@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Juegos;
 
 import java.awt.CardLayout;
 import java.awt.GridLayout;

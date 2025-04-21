@@ -1,4 +1,7 @@
-package org.example;
+package org.example.Juegos;
+
+import org.example.DatabaseConnection;
+import org.example.Ficha;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -79,11 +82,6 @@ public class Caballo extends JPanel
             }
         }
 
-        for (int i = 0; i < N; i++)
-        {
-            Arrays.fill (tableroSolucion [i], -1);
-        }
-
         // Posición inicial del caballo
         tableroSolucion [0][0] = 0;
         pasos.add (new Paso (0, 0, 0));
@@ -135,7 +133,7 @@ public class Caballo extends JPanel
             public void actionPerformed (ActionEvent e)
             {
                 SwingUtilities.getWindowAncestor (Caballo.this).dispose ();
-                new Juegos ();
+                new Juegos();
             }
         });
 
@@ -223,7 +221,7 @@ public class Caballo extends JPanel
             for (int columna = 0; columna < N; columna++)
             {
                 casillas [fila][columna].removeAll ();
-                casillas [fila][columna].setLayout (new BorderLayout());
+                casillas [fila][columna].setLayout (new BorderLayout ());
                 if (tableroSolucion [fila][columna] != -1)
                 {
                     JLabel label = new JLabel (String.valueOf (tableroSolucion [fila][columna]));
