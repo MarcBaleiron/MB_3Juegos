@@ -74,32 +74,12 @@ public class Hanoi extends JPanel
 
         resolverHanoi (numDisks, 0, 2, 1);
 
+        actualizarTorres ();
+
         moveListModel = new DefaultListModel <> ();
         JList <String> moveList = new JList <> (moveListModel);
         JScrollPane moveScrollPane = new JScrollPane (moveList);
         moveScrollPane.setPreferredSize (new Dimension (240, 0));
-
-        // Tiempo que pasa entre cada movimiento
-        timer = new javax.swing.Timer (500, new ActionListener()
-        {
-            @Override
-            public void actionPerformed (ActionEvent e)
-            {
-                if (moveIndex < moves.size ()) {
-                    Move move = moves.get (moveIndex);
-                    int disk = rods [move.from].get (rods [move.from].size () - 1);
-                    rods [move.to].add (rods [move.from].remove (rods [move.from].size () - 1));
-                    actualizarTorres ();
-                    moveListModel.addElement ("Move " + (moveIndex + 1) + ": Disk " + disk + " from Rod " + move.from + " to Rod " + move.to); // Add move to the list
-                    moveIndex++;
-                }
-                else
-                {
-                    timer.stop ();
-                }
-            }
-        });
-        timer.start ();
 
         // Botón para regresar a la pantalla inicial
         JButton botonRegresar = new JButton ("Regresar a la Pantalla Inicial");
@@ -131,6 +111,31 @@ public class Hanoi extends JPanel
         // Agregar el tablero y la lista de movimientos al panel principal
         add (contenedorPrincipal, BorderLayout.CENTER);
         add (moveScrollPane, BorderLayout.EAST);
+
+        revalidate ();
+        repaint ();
+
+        // Tiempo que pasa entre cada movimiento
+        timer = new javax.swing.Timer (500, new ActionListener ()
+        {
+            @Override
+            public void actionPerformed (ActionEvent e)
+            {
+                if (moveIndex < moves.size ()) {
+                    Move move = moves.get (moveIndex);
+                    int disk = rods [move.from].get (rods [move.from].size () - 1);
+                    rods [move.to].add (rods [move.from].remove (rods [move.from].size () - 1));
+                    actualizarTorres ();
+                    moveListModel.addElement ("Move " + (moveIndex + 1) + ": Disk " + disk + " from Rod " + move.from + " to Rod " + move.to); // Add move to the list
+                    moveIndex++;
+                }
+                else
+                {
+                    timer.stop ();
+                }
+            }
+        });
+        SwingUtilities.invokeLater (() -> timer.start ());
     }
 
     // Metodo para guardar los movimientos en la base de datos
