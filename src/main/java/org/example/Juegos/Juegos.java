@@ -42,16 +42,16 @@ public class Juegos extends JFrame
         // Botón para abrir la ventana de Torres de Hanoi
         JButton botonAbrirHanoi = new JButton ("Torres de Hanoi");
         botonAbrirHanoi.addActionListener (e -> {
-            Hanoi panelCaballo = new Hanoi ();
-            mainPanel.add (panelCaballo, "Hanoi");
+            Hanoi panelHanoi = new Hanoi ();
+            mainPanel.add (panelHanoi, "Hanoi");
             cardLayout.show (mainPanel, "Hanoi");
         });
 
         // Botón para abrir la ventana de Problema de las Reinas
         JButton botonAbrirReinas = new JButton ("Problema de las Reinas");
         botonAbrirReinas.addActionListener (e -> {
-            Reinas panelCaballo = new Reinas ();
-            mainPanel.add (panelCaballo, "Reinas");
+            Reinas panelReinas = new Reinas ();
+            mainPanel.add (panelReinas, "Reinas");
             cardLayout.show (mainPanel, "Reinas");
         });
 
