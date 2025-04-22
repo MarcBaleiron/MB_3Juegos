@@ -82,17 +82,29 @@ public class Caballo extends JPanel
             }
         }
 
-        // Posición inicial del caballo
-        tableroSolucion [0][0] = 0;
-        pasos.add (new Paso (0, 0, 0));
-        resolverCaballoUtil (0, 0, 1);
-
         // Se inicializa el tablero vacío
         for (int i = 0; i < N; i++)
         {
             Arrays.fill (tableroSolucion [i], -1);
         }
-        actualizarTablero();
+
+        // Posición inicial del caballo
+        tableroSolucion [0][0] = 0;
+        pasos.add (new Paso (0, 0, 0));
+        resolverCaballoUtil (0, 0, 1);
+
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < N; j++)
+            {
+                if (!(i == 0 && j == 0))
+                {
+                    tableroSolucion [i][j] = -1;
+                }
+            }
+        }
+
+        actualizarTablero ();
 
         // Panel para mostrar los movimientos
         moveListModel = new DefaultListModel <> ();
