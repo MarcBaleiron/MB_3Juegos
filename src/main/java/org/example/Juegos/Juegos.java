@@ -1,5 +1,7 @@
 package org.example.Juegos;
 
+import org.example.Controlador.CaballoControlador;
+
 import java.awt.CardLayout;
 import java.awt.GridLayout;
 
@@ -34,7 +36,7 @@ public class Juegos extends JFrame
         // Botón para abrir la ventana de Caballo
         JButton botonAbrirCaballo = new JButton ("Problema del Caballo de Ajedrez");
         botonAbrirCaballo.addActionListener (e -> {
-            Caballo panelCaballo = new Caballo ();
+            JPanel panelCaballo = CaballoControlador.createCaballoPanel();
             mainPanel.add (panelCaballo, "Caballo");
             cardLayout.show (mainPanel, "Caballo");
         });
