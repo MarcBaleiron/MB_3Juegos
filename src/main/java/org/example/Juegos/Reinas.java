@@ -1,4 +1,4 @@
-package org.example.Juegos;
+/*package org.example.Juegos;
 
 import org.example.DatabaseConnection;
 import org.example.Ficha;
@@ -266,4 +266,4 @@ public class Reinas extends JPanel
             }
         }
     }
-}
+}*/

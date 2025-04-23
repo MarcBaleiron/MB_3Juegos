@@ -1,6 +1,7 @@
 package org.example.Juegos;
 
 import org.example.Controlador.CaballoControlador;
+import org.example.Controlador.ReinasControlador;
 
 import java.awt.CardLayout;
 import java.awt.GridLayout;
@@ -41,20 +42,20 @@ public class Juegos extends JFrame
             cardLayout.show (mainPanel, "Caballo");
         });
 
+        // Botón para abrir la ventana de Problema de las Reinas
+        JButton botonAbrirReinas = new JButton ("Problema de las Reinas");
+        botonAbrirReinas.addActionListener (e -> {
+            JPanel panelReinas = ReinasControlador.createReinasPanel();
+            mainPanel.add (panelReinas, "Reinas");
+            cardLayout.show (mainPanel, "Reinas");
+        });
+
         // Botón para abrir la ventana de Torres de Hanoi
         JButton botonAbrirHanoi = new JButton ("Torres de Hanoi");
         botonAbrirHanoi.addActionListener (e -> {
             Hanoi panelHanoi = new Hanoi ();
             mainPanel.add (panelHanoi, "Hanoi");
             cardLayout.show (mainPanel, "Hanoi");
-        });
-
-        // Botón para abrir la ventana de Problema de las Reinas
-        JButton botonAbrirReinas = new JButton ("Problema de las Reinas");
-        botonAbrirReinas.addActionListener (e -> {
-            Reinas panelReinas = new Reinas ();
-            mainPanel.add (panelReinas, "Reinas");
-            cardLayout.show (mainPanel, "Reinas");
         });
 
         // Agregar los botones al panel de botones
