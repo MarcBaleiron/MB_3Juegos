@@ -1,6 +1,6 @@
 package org.example.Modelo;
 
-import org.example.Ficha;
+import org.example.Controlador.Ficha;
 
 import java.util.ArrayList;
 import java.util.List;

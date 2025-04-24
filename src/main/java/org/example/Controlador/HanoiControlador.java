@@ -1,7 +1,7 @@
 package org.example.Controlador;
 
-import org.example.DatabaseConnection;
-import org.example.Juegos.Juegos;
+import org.example.Modelo.DatabaseConnection;
+import org.example.Juegos;
 import org.example.Modelo.HanoiModelo;
 import org.example.Vista.HanoiVista;
 

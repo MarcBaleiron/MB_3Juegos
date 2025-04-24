@@ -1,7 +1,7 @@
 package org.example.Controlador;
 
-import org.example.DatabaseConnection;
-import org.example.Juegos.Juegos;
+import org.example.Modelo.DatabaseConnection;
+import org.example.Juegos;
 import org.example.Modelo.CaballoModelo;
 import org.example.Vista.CaballoVista;
 
@@ -17,12 +17,12 @@ public class CaballoControlador {
     private Timer timer;
     private int currentStep = 0;
 
-    public CaballoControlador(CaballoModelo model, CaballoVista view) {
-        this.modelo = model;
-        this.vista = view;
+    public CaballoControlador(CaballoModelo modelo, CaballoVista vista) {
+        this.modelo = modelo;
+        this.vista = vista;
 
         // Initialize view with model data
-        view.updateBoard(model.getSolutionBoard());
+        vista.actualizarTablero(modelo.getTableroSolucion());
 
         // Set up action listeners
         setupEventHandlers();
@@ -33,7 +33,7 @@ public class CaballoControlador {
 
     private void setupEventHandlers() {
         // Return button action
-        vista.getReturnButton().addActionListener(e -> {
+        vista.getBotonRegresar().addActionListener(e -> {
             timer.stop();
             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(vista);
             frame.dispose();
@@ -49,7 +49,7 @@ public class CaballoControlador {
             if (currentStep < modelo.getSteps().size()) {
                 CaballoModelo.Paso step = modelo.getSteps().get(currentStep);
                 modelo.updateBoard(step.getX(), step.getY(), step.getNumero());
-                vista.updateBoard(modelo.getSolutionBoard());
+                vista.actualizarTablero(modelo.getTableroSolucion());
                 vista.addMoveToList("Move " + step.getNumero() + ": (" + step.getX() + ", " + step.getY() + ")");
                 currentStep++;
             } else {

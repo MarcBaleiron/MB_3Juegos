@@ -1,4 +1,4 @@
-package org.example.Juegos;
+package org.example;
 
 import org.example.Controlador.CaballoControlador;
 import org.example.Controlador.HanoiControlador;

@@ -75,7 +75,7 @@ public class CaballoVista extends JPanel {
         return boardPanel;
     }
 
-    public void updateBoard(int[][] board) {
+    public void actualizarTablero(int[][] board) {
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
                 squares[row][col].removeAll();
@@ -98,6 +98,6 @@ public class CaballoVista extends JPanel {
     }
 
     // Getters for UI components
-    public JButton getReturnButton() { return returnButton; }
+    public JButton getBotonRegresar() { return returnButton; }
     public JButton getSaveButton() { return saveButton; }
 }

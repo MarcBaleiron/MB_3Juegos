@@ -1,6 +1,6 @@
 package org.example.Modelo;
 
-import org.example.Ficha;
+import org.example.Controlador.Ficha;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,7 +67,7 @@ public class CaballoModelo {
 
     // Getters and setters
     public int getBoardSize() { return boardSize; }
-    public int[][] getSolutionBoard() { return solutionBoard; }
+    public int[][] getTableroSolucion() { return solutionBoard; }
     public List<Paso> getSteps() { return steps; }
     public void updateBoard(int x, int y, int value) { solutionBoard[x][y] = value; }
 

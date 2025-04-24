@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.Juegos.Juegos;
+import org.example.Modelo.DatabaseConnection;
 
 public class Main
 {
