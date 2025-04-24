@@ -1,6 +1,7 @@
 package org.example.Juegos;
 
 import org.example.Controlador.CaballoControlador;
+import org.example.Controlador.HanoiControlador;
 import org.example.Controlador.ReinasControlador;
 
 import java.awt.CardLayout;
@@ -53,7 +54,7 @@ public class Juegos extends JFrame
         // Botón para abrir la ventana de Torres de Hanoi
         JButton botonAbrirHanoi = new JButton ("Torres de Hanoi");
         botonAbrirHanoi.addActionListener (e -> {
-            Hanoi panelHanoi = new Hanoi ();
+            JPanel panelHanoi = HanoiControlador.createHanoiPanel();
             mainPanel.add (panelHanoi, "Hanoi");
             cardLayout.show (mainPanel, "Hanoi");
         });
