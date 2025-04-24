@@ -1,24 +1,41 @@
 package org.example.Modelo;
 
-import org.example.Controlador.Ficha;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReinasModelo {
     private int N;
     private int[][] tableroSolucion;
-    private Ficha.FichaReinas fichaReinas;
     private List<Posicion> posicionesReinas;
 
     public ReinasModelo(int N) {
         this.N = N;
         this.tableroSolucion = new int[N][N];
-        this.fichaReinas = new Ficha.FichaReinas();
         this.posicionesReinas = new ArrayList<>();
 
         // Intentar resolver el problema
         resolverReinas(0);
+    }
+
+    // Fórmula para calcular los movimientos válidos
+    private List<int[]> calcularMovimientosValidos(int x, int y) {
+        List<int[]> movimientosValidos = new ArrayList<>();
+
+        // Horizontal and vertical moves
+        for (int i = 0; i < N; i++) {
+            if (i != x) movimientosValidos.add(new int[]{i, y});
+            if (i != y) movimientosValidos.add(new int[]{x, i});
+        }
+
+        // Diagonal moves
+        for (int i = 1; i < N; i++) {
+            if (x + i < N && y + i < N) movimientosValidos.add(new int[]{x + i, y + i});
+            if (x - i >= 0 && y - i >= 0) movimientosValidos.add(new int[]{x - i, y - i});
+            if (x + i < N && y - i >= 0) movimientosValidos.add(new int[]{x + i, y - i});
+            if (x - i >= 0 && y + i < N) movimientosValidos.add(new int[]{x - i, y + i});
+        }
+
+        return movimientosValidos;
     }
 
     public boolean resolverReinas(int fila) {
@@ -30,7 +47,7 @@ public class ReinasModelo {
             if (esSeguro(fila, columna)) {
                 tableroSolucion[fila][columna] = 1;
 
-                List<int[]> movimientosValidos = fichaReinas.mover(fila, columna, N, tableroSolucion);
+                List<int[]> movimientosValidos = calcularMovimientosValidos(fila, columna);
 
                 if (resolverReinas(fila + 1)) {
                     posicionesReinas.add(new Posicion(fila, columna));

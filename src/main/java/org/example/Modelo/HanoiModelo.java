@@ -1,7 +1,5 @@
 package org.example.Modelo;
 
-import org.example.Controlador.Ficha;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +7,6 @@ public class HanoiModelo {
     private int numDisks;
     private List<Integer>[] rods;
     private List<Move> moves;
-    private Ficha.FichaHanoi fichaHanoi;
 
     public HanoiModelo(int numDisks) {
         this.numDisks = numDisks;
@@ -24,7 +21,6 @@ public class HanoiModelo {
         }
 
         this.moves = new ArrayList<>();
-        this.fichaHanoi = new Ficha.FichaHanoi();
 
         // Calcular la solución
         resolverHanoi(numDisks, 0, 2, 1);
