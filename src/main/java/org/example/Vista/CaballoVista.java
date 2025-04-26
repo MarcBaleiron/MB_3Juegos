@@ -3,9 +3,11 @@ package org.example.Vista;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
 import java.awt.*;
 
-public class CaballoVista extends JPanel {
+public class CaballoVista extends JPanel
+{
     private int boardSize;
     private JPanel[][] squares;
     private DefaultListModel<String> moveListModel;
@@ -13,57 +15,64 @@ public class CaballoVista extends JPanel {
     private JButton returnButton;
     private JButton saveButton;
 
-    public CaballoVista(int boardSize) {
+    public CaballoVista(int boardSize)
+    {
         this.boardSize = boardSize;
         this.squares = new JPanel[boardSize][boardSize];
 
         setLayout(new BorderLayout());
 
-        // Create board panel
+        // Crear panel del tablero
         JPanel boardPanel = createBoardPanel();
 
-        // Create move list
+        // Crear lista de movimientos
         moveListModel = new DefaultListModel<>();
         moveList = new JList<>(moveListModel);
         JScrollPane moveScrollPane = new JScrollPane(moveList);
         moveScrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         moveScrollPane.setPreferredSize(new Dimension(200, 0));
 
-        // Create buttons
+        // Crear botones
         JPanel buttonPanel = new JPanel(new FlowLayout());
         returnButton = new JButton("Regresar a la Pantalla Inicial");
         saveButton = new JButton("Guardar en Base de Datos");
         buttonPanel.add(returnButton);
         buttonPanel.add(saveButton);
 
-        // Main container
+        // Contenedor principal
         JPanel mainContainer = new JPanel(new BorderLayout());
         mainContainer.setBorder(new EmptyBorder(30, 30, 30, 30));
         mainContainer.add(boardPanel, BorderLayout.CENTER);
         mainContainer.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Add components to main panel
+        // Añadir componentes al panel principal
         add(mainContainer, BorderLayout.CENTER);
         add(moveScrollPane, BorderLayout.EAST);
     }
 
-    private JPanel createBoardPanel() {
-        JPanel boardPanel = new JPanel(new GridLayout(boardSize, boardSize)) {
+    private JPanel createBoardPanel()
+    {
+        JPanel boardPanel = new JPanel(new GridLayout(boardSize, boardSize))
+        {
             @Override
-            public Dimension getPreferredSize() {
+            public Dimension getPreferredSize()
+            {
                 int size = Math.min(getParent().getWidth(), getParent().getHeight());
                 return new Dimension(size, size);
             }
 
             @Override
-            public void setBounds(int x, int y, int width, int height) {
+            public void setBounds(int x, int y, int width, int height)
+            {
                 int size = Math.min(width, height);
                 super.setBounds(x, y, size, size);
             }
         };
 
-        for (int row = 0; row < boardSize; row++) {
-            for (int col = 0; col < boardSize; col++) {
+        for (int row = 0; row < boardSize; row++)
+        {
+            for (int col = 0; col < boardSize; col++)
+            {
                 JPanel square = new JPanel();
                 square.setBorder(new LineBorder(Color.BLACK));
                 square.setBackground((row + col) % 2 == 0 ? Color.WHITE : Color.GRAY);
@@ -75,9 +84,12 @@ public class CaballoVista extends JPanel {
         return boardPanel;
     }
 
-    public void actualizarTablero(int[][] board) {
-        for (int row = 0; row < boardSize; row++) {
-            for (int col = 0; col < boardSize; col++) {
+    public void actualizarTablero(int[][] board)
+    {
+        for (int row = 0; row < boardSize; row++)
+        {
+            for (int col = 0; col < boardSize; col++)
+            {
                 squares[row][col].removeAll();
                 squares[row][col].setLayout(new BorderLayout());
                 if (board[row][col] != -1) {
@@ -93,11 +105,11 @@ public class CaballoVista extends JPanel {
         }
     }
 
-    public void addMoveToList(String move) {
+    public void addMoveToList(String move)
+    {
         moveListModel.addElement(move);
     }
 
-    // Getters for UI components
     public JButton getBotonRegresar() { return returnButton; }
     public JButton getSaveButton() { return saveButton; }
 }

@@ -6,30 +6,34 @@ import org.example.Modelo.ReinasModelo;
 import org.example.Vista.ReinasVista;
 
 import javax.swing.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 import java.util.UUID;
 
-public class ReinasControlador {
+public class ReinasControlador
+{
     private ReinasModelo modelo;
     private ReinasVista vista;
 
-    public ReinasControlador(ReinasModelo modelo, ReinasVista vista) {
+    public ReinasControlador(ReinasModelo modelo, ReinasVista vista)
+    {
         this.modelo = modelo;
         this.vista = vista;
 
-        // Inicializar la vista con los datos del modelo
         vista.actualizarTablero(modelo.getTableroSolucion());
         vista.actualizarLista(modelo.getTableroSolucion());
 
-        // Configurar los manejadores de eventos
         setupEventHandlers();
     }
 
-    private void setupEventHandlers() {
+    private void setupEventHandlers()
+    {
         // Botón de regreso a la pantalla inicial
-        vista.getBotonRegresar().addActionListener(e -> {
+        vista.getBotonRegresar().addActionListener(e ->
+        {
             SwingUtilities.getWindowAncestor(vista).dispose();
             new Juegos();
         });
@@ -38,16 +42,20 @@ public class ReinasControlador {
         vista.getSaveButton().addActionListener(e -> savePositionsToDatabase());
     }
 
-    private void savePositionsToDatabase() {
+    private void savePositionsToDatabase()
+    {
         String gameId = UUID.randomUUID().toString();
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(
                      "INSERT INTO posiciones_reinas (game_id, queen_number, row_position, col_position) VALUES (?, ?, ?, ?)")) {
 
             int queenNumber = 1;
-            for (int fila = 0; fila < modelo.getN(); fila++) {
-                for (int columna = 0; columna < modelo.getN(); columna++) {
-                    if (modelo.getTableroSolucion()[fila][columna] == 1) {
+            for (int fila = 0; fila < modelo.getN(); fila++)
+            {
+                for (int columna = 0; columna < modelo.getN(); columna++)
+                {
+                    if (modelo.getTableroSolucion()[fila][columna] == 1)
+                    {
                         stmt.setString(1, gameId);
                         stmt.setInt(2, queenNumber++);
                         stmt.setInt(3, fila);
@@ -58,7 +66,9 @@ public class ReinasControlador {
             }
             JOptionPane.showMessageDialog(vista, "Posiciones guardadas en la base de datos",
                     "Guardado exitoso", JOptionPane.INFORMATION_MESSAGE);
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
             JOptionPane.showMessageDialog(vista, "Error al guardar en la base de datos: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -66,7 +76,8 @@ public class ReinasControlador {
     }
 
     // Metodo estático para crear el panel completo (usado en Juegos.java)
-    public static JPanel createReinasPanel() {
+    public static JPanel createReinasPanel()
+    {
         // Se pide el tamaño deseado del tablero al usuario
         String input = JOptionPane.showInputDialog(null,
                 "Ingrese el tamaño del tablero (>=4):",
@@ -74,12 +85,15 @@ public class ReinasControlador {
                 JOptionPane.QUESTION_MESSAGE);
 
         int boardSize;
-        try {
+        try
+        {
             boardSize = Integer.parseInt(input);
-            if (boardSize < 4) {
+            if (boardSize < 4)
+            {
                 throw new NumberFormatException("El tamaño debe ser mayor o igual a 4.");
             }
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e)
+        {
             JOptionPane.showMessageDialog(null,
                     "Entrada inválida. Se usará el tamaño predeterminado de 8.",
                     "Error",
@@ -91,7 +105,8 @@ public class ReinasControlador {
         ReinasModelo modelo = new ReinasModelo(boardSize);
 
         // Verificar si se encontró solución
-        if (modelo.getTableroSolucion()[0][0] == 0 && modelo.getPosicionesReinas().isEmpty()) {
+        if (modelo.getTableroSolucion()[0][0] == 0 && modelo.getPosicionesReinas().isEmpty())
+        {
             JOptionPane.showMessageDialog(null,
                     "No se encontró solución para el tamaño del tablero especificado.",
                     "Sin Solución",

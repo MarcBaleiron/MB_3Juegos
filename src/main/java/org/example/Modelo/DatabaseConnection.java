@@ -25,7 +25,6 @@ public class DatabaseConnection
             try (Connection conn = getConnection();
                  Statement stmt = conn.createStatement())
             {
-                // Tabla Para el Problema del Caballo
                 stmt.execute("CREATE TABLE IF NOT EXISTS movimientos_caballo (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "game_id VARCHAR(255), " +
@@ -33,7 +32,6 @@ public class DatabaseConnection
                         "x_position INT, " +
                         "y_position INT)");
 
-                // Tabla para el problema de las Reinas
                 stmt.execute("CREATE TABLE IF NOT EXISTS posiciones_reinas (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "game_id VARCHAR(255), " +
@@ -41,7 +39,6 @@ public class DatabaseConnection
                         "row_position INT, " +
                         "col_position INT)");
 
-                // Tabla para las torres de Hanoi
                 stmt.execute("CREATE TABLE IF NOT EXISTS movimientos_hanoi (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "game_id VARCHAR(255), " +
@@ -52,7 +49,6 @@ public class DatabaseConnection
 
                 System.out.println("Tablas creadas correctamente en H2.");
             }
-            // Add to initializeDatabase()
             org.h2.tools.Server server = org.h2.tools.Server.createTcpServer("-tcpPort", "9092").start();
         }
         catch (SQLException e)

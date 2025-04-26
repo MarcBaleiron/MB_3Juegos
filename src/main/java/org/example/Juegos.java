@@ -37,7 +37,8 @@ public class Juegos extends JFrame
 
         // Botón para abrir la ventana de Caballo
         JButton botonAbrirCaballo = new JButton ("Problema del Caballo de Ajedrez");
-        botonAbrirCaballo.addActionListener (e -> {
+        botonAbrirCaballo.addActionListener (e ->
+        {
             JPanel panelCaballo = CaballoControlador.createCaballoPanel();
             mainPanel.add (panelCaballo, "Caballo");
             cardLayout.show (mainPanel, "Caballo");
@@ -45,7 +46,8 @@ public class Juegos extends JFrame
 
         // Botón para abrir la ventana de Problema de las Reinas
         JButton botonAbrirReinas = new JButton ("Problema de las Reinas");
-        botonAbrirReinas.addActionListener (e -> {
+        botonAbrirReinas.addActionListener (e ->
+        {
             JPanel panelReinas = ReinasControlador.createReinasPanel();
             mainPanel.add (panelReinas, "Reinas");
             cardLayout.show (mainPanel, "Reinas");
@@ -53,7 +55,8 @@ public class Juegos extends JFrame
 
         // Botón para abrir la ventana de Torres de Hanoi
         JButton botonAbrirHanoi = new JButton ("Torres de Hanoi");
-        botonAbrirHanoi.addActionListener (e -> {
+        botonAbrirHanoi.addActionListener (e ->
+        {
             JPanel panelHanoi = HanoiControlador.createHanoiPanel();
             mainPanel.add (panelHanoi, "Hanoi");
             cardLayout.show (mainPanel, "Hanoi");

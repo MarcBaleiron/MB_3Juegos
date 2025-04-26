@@ -6,37 +6,41 @@ import org.example.Modelo.HanoiModelo;
 import org.example.Vista.HanoiVista;
 
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 import java.util.UUID;
 
-public class HanoiControlador {
+public class HanoiControlador
+{
     private HanoiModelo modelo;
     private HanoiVista vista;
     private Timer timer;
     private int moveIndex;
 
-    public HanoiControlador(HanoiModelo modelo, HanoiVista vista) {
+    public HanoiControlador(HanoiModelo modelo, HanoiVista vista)
+    {
         this.modelo = modelo;
         this.vista = vista;
         this.moveIndex = 0;
 
-        // Inicializar la vista con los datos del modelo
         vista.actualizarTorres(modelo.getRods());
 
-        // Configurar los manejadores de eventos
         setupEventHandlers();
 
-        // Configurar el timer para la animación
         setupTimer();
     }
 
-    private void setupEventHandlers() {
+    private void setupEventHandlers()
+    {
         // Botón de regreso a la pantalla inicial
-        vista.getBotonRegresar().addActionListener(e -> {
+        vista.getBotonRegresar().addActionListener(e ->
+        {
             timer.stop();
             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(vista);
             frame.dispose();
@@ -47,11 +51,15 @@ public class HanoiControlador {
         vista.getSaveButton().addActionListener(e -> saveMovesToDatabase());
     }
 
-    private void setupTimer() {
-        timer = new Timer(500, new ActionListener() {
+    private void setupTimer()
+    {
+        timer = new Timer(500, new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (moveIndex < modelo.getMoves().size()) {
+            public void actionPerformed(ActionEvent e)
+            {
+                if (moveIndex < modelo.getMoves().size())
+                {
                     HanoiModelo.Move move = modelo.getMoves().get(moveIndex);
                     int diskNumber = modelo.getDiskNumber(move, moveIndex);
                     modelo.realizarMovimiento(moveIndex);
@@ -61,7 +69,9 @@ public class HanoiControlador {
                             " from Rod " + move.from +
                             " to Rod " + move.to);
                     moveIndex++;
-                } else {
+                }
+                else
+                {
                     timer.stop();
                 }
             }
@@ -70,13 +80,15 @@ public class HanoiControlador {
         SwingUtilities.invokeLater(() -> timer.start());
     }
 
-    private void saveMovesToDatabase() {
+    private void saveMovesToDatabase()
+    {
         String gameId = UUID.randomUUID().toString();
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(
                      "INSERT INTO movimientos_hanoi (game_id, move_number, disk_number, from_rod, to_rod) VALUES (?, ?, ?, ?, ?)")) {
 
-            for (int i = 0; i < modelo.getMoves().size(); i++) {
+            for (int i = 0; i < modelo.getMoves().size(); i++)
+            {
                 HanoiModelo.Move move = modelo.getMoves().get(i);
                 int diskNumber = modelo.getDiskNumber(move, i);
 
@@ -89,15 +101,18 @@ public class HanoiControlador {
             }
             JOptionPane.showMessageDialog(vista, "Movimientos guardados en la base de datos",
                     "Guardado exitoso", JOptionPane.INFORMATION_MESSAGE);
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
             JOptionPane.showMessageDialog(vista, "Error al guardar en la base de datos: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Método estático para crear el panel completo de Hanoi (usado en Juegos.java)
-    public static JPanel createHanoiPanel() {
+    // Metodo estático para crear el panel completo de Hanoi (usado en Juegos.java)
+    public static JPanel createHanoiPanel()
+    {
         // Se pide el tamaño deseado del tablero al usuario
         String input = JOptionPane.showInputDialog(null,
                 "Ingrese el número de discos (>=3):",
@@ -105,12 +120,16 @@ public class HanoiControlador {
                 JOptionPane.QUESTION_MESSAGE);
 
         int numDisks;
-        try {
+        try
+        {
             numDisks = Integer.parseInt(input);
-            if (numDisks < 3) {
+            if (numDisks < 3)
+            {
                 throw new NumberFormatException("El número de discos debe ser mayor o igual a 3.");
             }
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             JOptionPane.showMessageDialog(null,
                     "Entrada inválida. Se usará el número predeterminado de 3 discos.",
                     "Error",

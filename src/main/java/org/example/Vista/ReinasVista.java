@@ -3,9 +3,11 @@ package org.example.Vista;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
 import java.awt.*;
 
-public class ReinasVista extends JPanel {
+public class ReinasVista extends JPanel
+{
     private int N;
     private JPanel[][] casillas;
     private DefaultListModel<String> listModel;
@@ -13,7 +15,8 @@ public class ReinasVista extends JPanel {
     private JButton botonRegresar;
     private JButton saveButton;
 
-    public ReinasVista(int N) {
+    public ReinasVista(int N)
+    {
         this.N = N;
         this.casillas = new JPanel[N][N];
         this.listModel = new DefaultListModel<>();
@@ -48,22 +51,27 @@ public class ReinasVista extends JPanel {
         add(listScrollPane, BorderLayout.EAST);
     }
 
-    private JPanel createBoardPanel() {
-        JPanel tablero = new JPanel(new GridLayout(N, N)) {
+    private JPanel createBoardPanel()
+    {
+        JPanel tablero = new JPanel(new GridLayout(N, N))
+        {
             @Override
-            public Dimension getPreferredSize() {
+            public Dimension getPreferredSize()
+            {
                 int size = Math.min(getParent().getWidth(), getParent().getHeight());
                 return new Dimension(size, size);
             }
 
             @Override
-            public void setBounds(int x, int y, int width, int height) {
+            public void setBounds(int x, int y, int width, int height)
+            {
                 int size = Math.min(width, height);
                 super.setBounds(x, y, size, size);
             }
         };
 
-        addComponentListener(new java.awt.event.ComponentAdapter() {
+        addComponentListener(new java.awt.event.ComponentAdapter()
+        {
             @Override
             public void componentResized(java.awt.event.ComponentEvent e) {
                 tablero.revalidate();
@@ -71,8 +79,10 @@ public class ReinasVista extends JPanel {
             }
         });
 
-        for (int fila = 0; fila < N; fila++) {
-            for (int columna = 0; columna < N; columna++) {
+        for (int fila = 0; fila < N; fila++)
+        {
+            for (int columna = 0; columna < N; columna++)
+            {
                 JPanel cuadrado = new JPanel();
                 cuadrado.setBorder(new LineBorder(Color.BLACK));
                 cuadrado.setBackground((fila + columna) % 2 == 0 ? Color.WHITE : Color.GRAY);
@@ -84,12 +94,16 @@ public class ReinasVista extends JPanel {
         return tablero;
     }
 
-    public void actualizarTablero(int[][] tableroSolucion) {
-        for (int fila = 0; fila < N; fila++) {
-            for (int columna = 0; columna < N; columna++) {
+    public void actualizarTablero(int[][] tableroSolucion)
+    {
+        for (int fila = 0; fila < N; fila++)
+        {
+            for (int columna = 0; columna < N; columna++)
+            {
                 casillas[fila][columna].removeAll();
                 casillas[fila][columna].setLayout(new BorderLayout());
-                if (tableroSolucion[fila][columna] == 1) {
+                if (tableroSolucion[fila][columna] == 1)
+                {
                     JLabel label = new JLabel("Q");
                     label.setHorizontalAlignment(SwingConstants.CENTER);
                     label.setVerticalAlignment(SwingConstants.CENTER);
@@ -102,23 +116,28 @@ public class ReinasVista extends JPanel {
         }
     }
 
-    public void actualizarLista(int[][] tableroSolucion) {
+    public void actualizarLista(int[][] tableroSolucion)
+    {
         listModel.clear();
-        for (int fila = 0; fila < N; fila++) {
-            for (int columna = 0; columna < N; columna++) {
-                if (tableroSolucion[fila][columna] == 1) {
+        for (int fila = 0; fila < N; fila++)
+        {
+            for (int columna = 0; columna < N; columna++)
+            {
+                if (tableroSolucion[fila][columna] == 1)
+                {
                     listModel.addElement("[" + (fila + 1) + ", " + (columna + 1) + "]");
                 }
             }
         }
     }
 
-    // Getters para los componentes UI
-    public JButton getBotonRegresar() {
+    public JButton getBotonRegresar()
+    {
         return botonRegresar;
     }
 
-    public JButton getSaveButton() {
+    public JButton getSaveButton()
+    {
         return saveButton;
     }
 }

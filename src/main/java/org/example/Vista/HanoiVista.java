@@ -1,7 +1,5 @@
 package org.example.Vista;
 
-import org.example.Modelo.HanoiModelo;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -9,7 +7,8 @@ import java.awt.*;
 
 import java.util.List;
 
-public class HanoiVista extends JPanel {
+public class HanoiVista extends JPanel
+{
     private JPanel[] rodPanels;
     private DefaultListModel<String> moveListModel;
     private JList<String> moveList;
@@ -17,7 +16,8 @@ public class HanoiVista extends JPanel {
     private JButton saveButton;
     private JPanel contenedorPrincipal;
 
-    public HanoiVista() {
+    public HanoiVista()
+    {
         setLayout(new BorderLayout());
 
         // Creación del modelo de lista de movimientos
@@ -29,7 +29,8 @@ public class HanoiVista extends JPanel {
         // Panel para las torres
         JPanel rodsPanel = new JPanel(new GridLayout(1, 3, 20, 0));
         rodPanels = new JPanel[3];
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++)
+        {
             rodPanels[i] = new JPanel();
             rodPanels[i].setLayout(new BoxLayout(rodPanels[i], BoxLayout.Y_AXIS));
             rodPanels[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -59,8 +60,10 @@ public class HanoiVista extends JPanel {
     }
 
     // Actualizar visualización de las torres
-    public void actualizarTorres(List<Integer>[] rods) {
-        for (int i = 0; i < 3; i++) {
+    public void actualizarTorres(List<Integer>[] rods)
+    {
+        for (int i = 0; i < 3; i++)
+        {
             rodPanels[i].removeAll();
             rodPanels[i].setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
@@ -69,7 +72,8 @@ public class HanoiVista extends JPanel {
             gbc.anchor = GridBagConstraints.SOUTH;
             gbc.weighty = 1.0;
 
-            for (int j = rods[i].size() - 1; j >= 0; j--) {
+            for (int j = rods[i].size() - 1; j >= 0; j--)
+            {
                 int disk = rods[i].get(j);
                 JLabel diskLabel = new JLabel();
                 diskLabel.setOpaque(true);
@@ -95,11 +99,9 @@ public class HanoiVista extends JPanel {
         moveListModel.addElement(move);
     }
 
-    // Getters para los componentes UI
     public JButton getBotonRegresar() {
         return botonRegresar;
     }
-
     public JButton getSaveButton() {
         return saveButton;
     }
